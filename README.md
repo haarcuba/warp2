@@ -38,7 +38,7 @@ import random
 
 greeter = warp2.warper.Warper( 'import greeter ; thing=greeter.Greeter()' )
 
-for _ in range( 100 ):
+for _ in range( 10 ):
     greeting = random.choice( [ 'hi', 'hello', "what's up", 'how are you' ] )
     greeter.say( greeting )
 
