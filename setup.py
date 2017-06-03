@@ -6,10 +6,10 @@ requires = []
 tests_require = []
 
 setup(name='warp2',
-      version='0.1.0',
+      version='0.1.1',
       description=README,
       long_description=README,
-      url='https://github.com/haarcuba/warp2',
+      url='https://haarcuba.github.io/warp2/',
       classifiers=[
           "Programming Language :: Python",
       ],
