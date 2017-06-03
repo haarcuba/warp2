@@ -1,3 +1,4 @@
+# this is in Python 2
 import collections
 
 class Greeter( object ):

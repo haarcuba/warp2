@@ -13,6 +13,7 @@ It communicates with the subprocess using [pickle](https://docs.python.org/3.6/l
 here's a Python 2 class of a greeter that tracks a word count:
 
 ```python
+# this is in Python 2
 import collections
 
 class Greeter( object ):
@@ -31,6 +32,7 @@ class Greeter( object ):
 here's how to use it from Python 3, note that you must provide a `thing` object for the Warp 2 library to use:
 
 ```python
+# this is in Python 3
 import warp2.warper
 import random
 
