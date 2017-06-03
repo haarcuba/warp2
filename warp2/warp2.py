@@ -1,4 +1,7 @@
 import subprocess
+import logging
+logging.basicConfig( level = logging.INFO )
+import tempfile
 import pickle
 import os
 
@@ -17,17 +20,19 @@ class _Function:
 
 class Warp2:
     def __init__( self, moduleName, env = None ):
-        input, self._writer = self._pipe()
-        self._reader, output = self._pipe()
-        self._process = subprocess.Popen( [ 'python2', 'warp2/wrapper.py', moduleName ],
-                                          stdin = input,
-                                          stdout = output,
-                                          env = env )
+        self._directory = tempfile.TemporaryDirectory( prefix = 'warp2_' )
+        writeFifo = self._makeFifo( 'master_writer' )
+        readFifo = self._makeFifo( 'master_reader' )
+        self._process = subprocess.Popen(
+            [ 'python2', 'warp2/wrapper.py', moduleName, writeFifo, readFifo ], env = env )
+        self._writer = open( writeFifo, 'wb' )
+        self._reader = open( readFifo, 'rb' )
 
-    def _pipe( self ):
-        # r, w = os.pipe2( os.O_NONBLOCK )
-        r, w = os.pipe()
-        return os.fdopen( r, 'rb' ), os.fdopen( w, 'wb' )
+    def _makeFifo( self, name ):
+        fifo = os.path.join( self._directory.name, name )
+        logging.info( 'using fifo={}'.format( fifo ) )
+        os.mkfifo( fifo )
+        return fifo
 
     def __getattr__( self, name ):
         return _Function( name, self._writer, self._reader )
