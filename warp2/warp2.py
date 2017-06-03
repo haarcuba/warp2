@@ -5,6 +5,8 @@ import tempfile
 import pickle
 import os
 
+SECRET = 'eb666635-67d1-49b3-8953-adf018bdf725'
+
 class _Function:
     def __init__( self, name, writer, reader ):
         self._name = name
@@ -16,6 +18,9 @@ class _Function:
         pickle.dump( triplet, self._writer, protocol = 2 )
         self._writer.flush()
         response = pickle.load( self._reader )
+        if type(response) is dict:
+            if SECRET in response:
+                raise Exception( response[ 'exception' ] )
         return response
 
 class Warp2:

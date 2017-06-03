@@ -5,6 +5,8 @@ import sys
 import pickle
 import argparse
 
+SECRET = 'eb666635-67d1-49b3-8953-adf018bdf725'
+
 class Server( object ):
     def __init__( self, thing, reader, writer ):
         self._reader = reader
@@ -16,9 +18,13 @@ class Server( object ):
         while True:
             call, args, kwargs = self._read()
             logging.info( 'read {}'.format( ( call, args, kwargs ) ) )
-            function = getattr( self._thing, call )
-            result = function( * args, ** kwargs )
-            logging.info( 'write {}'.format( result ) )
+            try:
+                function = getattr( self._thing, call )
+                result = function( * args, ** kwargs )
+                logging.info( 'write {}'.format( result ) )
+            except Exception as e:
+                result = {SECRET: 1, 'exception': str( e ) }
+
             self._write( result )
 
     def _read( self ):
@@ -31,15 +37,14 @@ class Server( object ):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument( 'module' )
+    parser.add_argument( 'code' )
     parser.add_argument( 'reader' )
     parser.add_argument( 'writer' )
     arguments = parser.parse_args()
-    moduleName = arguments.module
-    module = importlib.import_module( moduleName )
+    exec( arguments.code )
     reader = open( arguments.reader, 'rb' )
     writer = open( arguments.writer, 'wb' )
-    Server( module, reader, writer )
+    Server( thing, reader, writer )
 
 if __name__ == '__main__':
     main()
