@@ -22,12 +22,13 @@ class _Function:
         return response
 
 class Warper:
-    def __init__( self, moduleName, env = None ):
+    def __init__( self, moduleName, env = None, python2 = 'python2' ):
+        HERE = os.path.dirname( __file__ )
+        MEMBRANE = os.path.join( HERE, 'membrane.py' )
         self._directory = tempfile.TemporaryDirectory( prefix = 'warp2_' )
         writeFifo = self._makeFifo( 'master_writer' )
         readFifo = self._makeFifo( 'master_reader' )
-        self._process = subprocess.Popen(
-            [ 'python2', 'warp2/membrane.py', moduleName, writeFifo, readFifo ], env = env )
+        self._process = subprocess.Popen( [ python2, MEMBRANE, moduleName, writeFifo, readFifo ], env = env )
         self._writer = open( writeFifo, 'wb' )
         self._reader = open( readFifo, 'rb' )
 

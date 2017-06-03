@@ -2,8 +2,7 @@ from setuptools import setup, find_packages
 
 README = 'use python2 modules in python3'
 
-requires = [ 'flask',
-             'requests', ]
+requires = []
 tests_require = [
         'pytest',
         ]

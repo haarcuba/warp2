@@ -38,7 +38,10 @@ def main():
     exec( arguments.code )
     reader = open( arguments.reader, 'rb' )
     writer = open( arguments.writer, 'wb' )
-    Server( thing, reader, writer )
+    try:
+        Server( thing, reader, writer )
+    except EOFError:
+        pass
 
 if __name__ == '__main__':
     main()
