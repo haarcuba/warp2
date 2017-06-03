@@ -21,7 +21,7 @@ class Server( object ):
                 result = function( * args, ** kwargs )
                 logging.info( 'write {}'.format( result ) )
             except Exception as e:
-                result = {SECRET: 1, 'exception': str( e ) }
+                result = { SECRET: 1, 'exception': str( e ) }
 
             self._write( result )
 
