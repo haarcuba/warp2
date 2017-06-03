@@ -3,9 +3,7 @@ from setuptools import setup, find_packages
 README = 'use python2 modules in python3'
 
 requires = []
-tests_require = [
-        'pytest',
-        ]
+tests_require = []
 
 setup(name='warp2',
       version='0.0.1',
