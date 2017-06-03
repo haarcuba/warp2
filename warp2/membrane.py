@@ -1,5 +1,3 @@
-import logging
-logging.basicConfig( level = logging.INFO )
 import pickle
 import argparse
 
@@ -15,11 +13,9 @@ class Server( object ):
     def _go( self ):
         while True:
             call, args, kwargs = self._read()
-            logging.info( 'read {}'.format( ( call, args, kwargs ) ) )
             try:
                 function = getattr( self._thing, call )
                 result = function( * args, ** kwargs )
-                logging.info( 'write {}'.format( result ) )
             except Exception as e:
                 result = { SECRET: 1, 'exception': str( e ) }
 
